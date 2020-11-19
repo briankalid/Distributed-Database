@@ -1,0 +1,56 @@
+#--- Start service (Arch) ---#
+sudo systemctl start mariadb
+mariadb -u <user> -p <password>
+
+#--- Create databases ---#
+CREATE DATABASE Morelia;
+CREATE DATABASE Patzcuaro;
+
+
+
+#--- Create Tables ---#
+ #-- Morelia --#
+USE Morelia;
+CREATE TABLE Clientes (
+		Id 		  CHAR(8)      NOT NULL   PRIMARY KEY,
+		Nombre 		  VARCHAR(40)  NOT NULL,
+		Apellido_Paterno  VARCHAR(30)  NOT NULL,
+		Apellido_Materno  VARCHAR(30)  NOT NULL,
+		RFC		  VARCHAR(13)  NOT NULL
+
+);
+
+CREATE TABLE Direcciones (
+		Calle 	    VARCHAR(50)  NOT NULL,
+		Colonia     VARCHAR(50)  NOT NULL,
+		Estado      VARCHAR(30)  NOT NULL,
+		CP          CHAR(5)      NOT NULL,
+		Id_Cliente  CHAR(8)      NOT NULL,
+		
+		FOREIGN KEY (Id_Cliente) REFERENCES  Clientes (Id)
+);
+
+
+
+
+ #-- Patzcuaro --#
+USE Patzcuaro;
+CREATE TABLE Clientes (
+		Id 		  CHAR(8)      NOT NULL PRIMARY KEY,
+		Nombre 		  VARCHAR(40)  NOT NULL,
+		Apellido_Paterno  VARCHAR(30)  NOT NULL,
+		Apellido_Materno  VARCHAR(30)  NOT NULL,
+		RFC		  VARCHAR(13)  NOT NULL
+
+);
+
+
+CREATE TABLE Direcciones (
+		Calle 	    VARCHAR(50)  NOT NULL,
+		Colonia     VARCHAR(50)  NOT NULL,
+		Estado      VARCHAR(30)  NOT NULL,
+		CP          CHAR(5)      NOT NULL,
+		Id_Cliente  CHAR(8)      NOT NULL,
+		
+		FOREIGN KEY (Id_Cliente) REFERENCES  Clientes (Id)
+);

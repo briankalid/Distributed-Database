@@ -1,6 +1,6 @@
 #--- Start service (Arch) ---#
 sudo systemctl start mariadb
-mariadb -u <user> -p <password>
+mariadb -u <user> -p 
 
 #--- Create databases ---#
 CREATE DATABASE Morelia;

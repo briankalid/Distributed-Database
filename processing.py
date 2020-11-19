@@ -33,18 +33,23 @@ def inDatabase(cnxm,cnxp,nombre,ap,am,rfc):
     query="""SELECT * FROM Clientes Where Nombre=%s and Apellido_Paterno=%s and Apellido_Materno=%s and RFC=%s"""
     cursorp.execute(query,(nombre,ap,am,rfc))
     resp=cursorp.fetchall()
-
+    print(resp)
     if len(resm)>0:
         #existin_morelia=True
         print('Ya existe en la base de datos')
         print('Los siguientes datos son correctos?')
-        print(resm)
+        query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
+        cursor.execute(query,(resm[0][0],))
+        print(cursor.fetchall())
+
         return True
     
     elif len(resp)>0:
         print('Ya existe en la base de datos')
         print('Los siguientes datos son correctos?')
-        print(resp)
+        query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
+        cursorp.execute(query,(resp[0][0],))
+        print(cursorp.fetchall())
 
         
         return True

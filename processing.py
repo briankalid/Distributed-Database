@@ -26,10 +26,12 @@ def inDatabase(cnxm,cnxp,nombre,ap,am,rfc):
     elif len(cursorp.fetchall())>0:
         #existin_patz=True
         print(cursorp.fetchall())
+        
         return True
 
-    #cursor.close()
     
     else:
-        return(False)
+        cursor.close()
+        cursorp.close()
+        return False
 

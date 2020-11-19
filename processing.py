@@ -56,12 +56,17 @@ def inDatabase(cnxm,cnxp,nombre,ap,am,rfc):
         return False
 
 
-def registrar_cliente(cnx,nombre,ap,am,rfc):
+def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
     cursor = cnx.cursor()
     id = generate_id("U")
     query = """INSERT INTO Clientes(Id,Nombre,Apellido_Paterno,Apellido_Materno,RFC) VALUES (%s,%s,%s,%s,%s)"""
     data_query = (id,nombre,ap,am,rfc)
     cursor.execute(query,data_query)
     cnx.commit()
+    query = """INSERT INTO Direcciones(Calle,Colonia,Estado,CP,Id_Cliente) VALUES(%s,%s,%s,%s,%s)"""
+    data_query=(calle,col,est,cp,id)
+    cursor.execute(query,data_query)
+    cnx.commit()
+    print('Cliente registrado con exito')
     print("Query efectuadas correctamente...")
 

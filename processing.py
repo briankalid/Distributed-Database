@@ -68,5 +68,4 @@ def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
     cursor.execute(query,data_query)
     cnx.commit()
     print('Cliente registrado con exito')
-    print("Query efectuadas correctamente...")
 

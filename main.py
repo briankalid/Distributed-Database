@@ -19,7 +19,7 @@ print(sucursales,cnxs)
 
 
 #--- Menu ---#
-def sucursal():
+def Sucursal():
     #Mostrar sucursales
     print ('\n\t Bienvenido \n\t Selecciona tu sucursal\n')
     for i in range (len(sucursales)):
@@ -34,7 +34,7 @@ def sucursal():
         print("< OPCION INVALIDA >")
 
 
-def operacion():
+def Operacion():
     print('\n\t \n\t Opciones: \n\t\t 1.- Insertar nuevos clientes y direcciones \n\t\t')
     print('\n\t\t 2.- Actualizar datos de los clientes y direcciones \n\t\t')
     print('\n\t\t 3.- Buscar Clientes por nombre, RFC, o domicilio desde cualquier sucursal \n\t\t')
@@ -47,7 +47,7 @@ def operacion():
     except:
         print("< OPCION INVALIDA >")
 
-def buscar_cliente():
+def Buscar_cliente():
     print ("\n\t Buscar cliente por: \n 1.- Nombre \n 2.- RFC \n 3.- Domicilio")
     try: 
         opcion_busqueda = int(input())
@@ -58,7 +58,7 @@ def buscar_cliente():
         print("< OPCION INVALIDA >")
         
 
-def datos_registrar_cliente():
+def Datos_registrar_cliente():
     print("\n\t Nombre: ")
     NOMBRE = input()
     print("\n\t Apellido Paterno: ")
@@ -77,26 +77,29 @@ def datos_registrar_cliente():
     CP = input()
     
     return (NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
+
+
 sucursal = sucursal()
 
 if (sucursal == 1):   
     sucursal = "Morelia"
-    operacion =  operacion()
+    operacion =  Operacion()
     
     if operacion == 1:
         #def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp)
         #Checar si los datos a dar de alta ya esta en algunda de las db
-        NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = datos_registrar_cliente()
+        NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = Datos_registrar_cliente()
         
-        #Dar de alta 
-        processing.registrar_cliente(cnxs[0],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
-    
+        if( !processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
+            #Dar de alta 
+            processing.registrar_cliente(cnxs[0],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
+        
     elif operacion == 2:
         #Actualizar datos
     
     elif operacion == 3:
         #buscar clientes
-        opcion_busqueda = buscar_cliente()
+        opcion_busqueda = Buscar_cliente()
         if opcion_busqueda == 1: #Por nombre
         
 elif (sucursal == 2): sucursal = "Patzcuaro"

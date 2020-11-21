@@ -9,10 +9,10 @@ This proyect is under GPL-3.0 License
 import database
 import processing
 
-#cnx_morelia=database.morelia()
-#cnx_patzcuaro=database.patzcuaro()
+cnx_morelia=database.morelia()
+cnx_patzcuaro=database.patzcuaro()
 
-#print(processing.prueba(cnx_morelia))
+print(processing.prueba(cnx_morelia))
 
 
 #--- Menu ---#
@@ -26,7 +26,7 @@ def sucursal():
 			print('Opcion invalida')
 		else: return ( sucursal )
 	except:
-		print('Opcion invalida'
+		print('Opcion invalida')
 
 
 def operacion():
@@ -46,4 +46,9 @@ def operacion():
 sucursal = sucursal()
 operacion =  operacion()
 
-	
+if (sucursal == 1):
+    sucursal = Morelia
+    
+    #conectar a base de datos Morelia
+    database.init_databases
+    

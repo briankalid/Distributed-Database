@@ -9,12 +9,16 @@ This proyect is under GPL-3.0 License
 import database
 import processing
 
-cnx_morelia=database.morelia()
-cnx_patzcuaro=database.patzcuaro()
+#cnx_morelia=database.morelia()
+#cnx_patzcuaro=database.patzcuaro()
 
-print(processing.prueba(cnx_morelia))
+#print(processing.prueba(cnx_morelia))
 
 
+sucursales,cnxs = database.init_databases()
+print(sucursales,cnxs)
+
+"""
 #--- Menu ---#
 def sucursal():
 	#Mostrar sucursales
@@ -52,3 +56,4 @@ if (sucursal == 1):
     #conectar a base de datos Morelia
     database.init_databases
     
+"""

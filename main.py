@@ -79,7 +79,7 @@ def Datos_registrar_cliente():
     return (NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
 
 
-sucursal = sucursal()
+sucursal = Sucursal()
 
 if (sucursal == 1):   
     sucursal = "Morelia"
@@ -90,20 +90,35 @@ if (sucursal == 1):
         #Checar si los datos a dar de alta ya esta en algunda de las db
         NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = Datos_registrar_cliente()
         
-        if( !processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
+        if( not processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
             #Dar de alta 
             processing.registrar_cliente(cnxs[0],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
         
-    elif operacion == 2:
+    #elif operacion == 2:
         #Actualizar datos
     
     elif operacion == 3:
         #buscar clientes
         opcion_busqueda = Buscar_cliente()
-        if opcion_busqueda == 1: #Por nombre
+        #if opcion_busqueda == 1: #Por nombre
         
-elif (sucursal == 2): sucursal = "Patzcuaro"
+elif (sucursal == 2): 
+    sucursal = "Patzcuaro"
+    operacion =  Operacion()
+    if operacion == 1:
+        #def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp)
+        #Checar si los datos a dar de alta ya esta en algunda de las db
+        NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = Datos_registrar_cliente()
+        
+        if( not processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
+            #Dar de alta 
+            processing.registrar_cliente(cnxs[1],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
+        
+    #elif operacion == 2:
+        #Actualizar datos
     
-#conectar a base de datos Morelia
-database.init_databases
+    elif operacion == 3:
+        #buscar clientes
+        opcion_busqueda = Buscar_cliente()
+        #if opcion_busqueda == 1: #Por nombre
     

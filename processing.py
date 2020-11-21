@@ -36,7 +36,7 @@ def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
             print(cursor.fetchall())
  
             return True
-
+    return False
 
 
 #    existin_morelia=False

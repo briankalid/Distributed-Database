@@ -14,11 +14,30 @@ def generate_id(UG):
     return(ID)
 
 
-def prueba(cnx):
-    cursor=cnx.cursor()
-    query=("""describe Clientes""")
-    cursor.execute(query)
-    return(cursor.fetchall())
+
+def update_cliente(cnx,id):
+    still=True
+    clt=['Nombre','Apellido_Paterno','Apellido_Materno','RFC']
+    while still:
+        print('Que desea modificar?')
+        print('1. Datos del cliente')
+        print('2. Direccion')
+        print('3. Dejar de modificar')
+        op=int(input())
+        if op == 1:
+            print('Que datos desea modificar?')
+            for i,e in enumerate(clt):
+                print(str(i)+'.',e)
+
+            print('Hint: Puedes escoger varias opciones a la vez, ejemplo: 1,2,4')
+            lista=[int(i)for i in input().split(',')]
+            print(lista)
+        
+
+
+
+
+
 
 def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
     for i,cnx in enumerate(cnxs):
@@ -30,54 +49,26 @@ def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
         if(len(resp))>0:
             print('Ya existe en la base de datos de',sucursales[i])
             print('Los siguientes datos son correctos?')
-            
+            print(resp)
             query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
+
+           
+
             cursor.execute(query,(resp[0][0],))
             print(cursor.fetchall())
- 
-            return True
+            mod=input('si/no: ')
+            
+            if mod=='si':
+                return True
+
+            else:
+                mod=input('Quieres modificarlos? si/no: ')
+                if mod == 'si':
+                    update_cliente(cnx,resp[0][0])
+                else:
+                    return True
+            #return True
     return False
-
-
-#    existin_morelia=False
- #   existin_patz=False
-
-# cursor=cnxm.cursor()
-# query="""SELECT * FROM Clientes Where Nombre=%s and Apellido_Paterno=%s and Apellido_Materno=%s and RFC=%s"""
-# cursor.execute(query,(nombre,ap,am,rfc))
-# resm=cursor.fetchall()
-
-# cursorp=cnxp.cursor()
-# query="""SELECT * FROM Clientes Where Nombre=%s and Apellido_Paterno=%s and Apellido_Materno=%s and RFC=%s"""
-# cursorp.execute(query,(nombre,ap,am,rfc))
-# resp=cursorp.fetchall()
-# print(resp)
-# if len(resm)>0:
-#     #existin_morelia=True
-#     print('Ya existe en la base de datos')
-#     print('Los siguientes datos son correctos?')
-#     query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
-#     cursor.execute(query,(resm[0][0],))
-#     print(cursor.fetchall())
-
-#     return True
-# 
-# elif len(resp)>0:
-#     print('Ya existe en la base de datos')
-#     print('Los siguientes datos son correctos?')
-#     query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
-#     cursorp.execute(query,(resp[0][0],))
-#     print(cursorp.fetchall())
-
-#     
-#     return True
-
-# 
-# else:
-#     #cursor.close()
-#     #cursorp.close()
-#     return False
-
 
 def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
     cursor = cnx.cursor()

@@ -42,7 +42,7 @@ def update_cliente(cnx,datos,datos_dom):
             aux=[]
             dataux=[]
             for elemento in lista:
-                if elemento ==5:
+                if elemento ==len(ctl)+1:
                     break
                 else:
                     aux.append(clt[elemento-1])
@@ -64,9 +64,35 @@ def update_cliente(cnx,datos,datos_dom):
             print('Que datos desea modificar?')
             for i,e in enumerate(dr):
                 print(str(i+1)+'.',e)
+            print(str(len(dr)+1)+'.Regresar')
             print('Hint: Puedes escoger varias opciones a la vez, ejemplo: 1,2,4')
             lista=[int(i) for i in input().split(',')]
             
+            aux=[]
+            dataux=[]
+            for elemento in lista:
+                if elemento ==len(dr)+1:
+                    break
+                else:
+                    aux.append(dr[elemento-1])
+            for i,e in enumerate(aux):
+                dataux.append(input('Nuevo '+e+': '))
+            print(dataux)
+
+            query="""UPDATE Direcciones SET Calle = %s, Colonia = %s, Estado = %s, CP = %s WHERE Id_Cliente=%s"""
+            for i,elemento in enumerate(lista):
+                datos_dom[elemento-1]=dataux[i]
+            print(datos_dom)
+            data_query=tuple(datos_dom)
+            cursor=cnx.cursor()
+            cursor.execute(query,data_query)
+            cnx.commit()
+            print('Actualizacion exitosa')
+
+        else:
+            still=False
+            
+
 
 
 

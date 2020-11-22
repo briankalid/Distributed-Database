@@ -122,7 +122,8 @@ if __name__=='__main__':
                 CP = input()
                 processing.buscar_cliente(cnxs,CALLE,COLONIA,ESTADO,CP)
                 
-            #elif opcion_busqueda == 4: #Listado Completo
+            elif opcion_busqueda == 4: #Listado Completo
+                processing.all_client(sucursales,cnxs)
                 
         elif operacion == 4: 
             SERVICE_ON = False

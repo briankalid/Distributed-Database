@@ -123,7 +123,10 @@ if __name__=='__main__':
             #buscar clientes
             opcion_busqueda = Buscar_cliente()
             if opcion_busqueda == 1: #Por nombre
-                processing.buscar_cliente(cnxs,NOMBRE,AP,AM)
+                NOMBRE=input('Nombre: ')
+                AP=input('Apellido Paterno: ')
+                AM=input('Apellido Materno: ')
+                processing.buscar_cliente(cnxs,nombre=NOMBRE,ap=AP,am=AM)
                 
             elif opcion_busqueda == 2: #Por RFC
                 processing.buscar_cliente(cnxs,RFC)

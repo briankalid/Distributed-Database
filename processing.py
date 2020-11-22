@@ -147,6 +147,18 @@ def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
 
 
 
+def all_client(sucursales,cnxs):
+    for i,cnx in enumerate(cnxs):
+        cursor = cnx.cursor()
+        query="""SELECT * FROM Clientes"""
+        cursor.execute(query)
+        for elemento in cursor.fetchall():
+            print(sucursales[i],elemento)
+
+
+
+
+
 def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=None,estado=None,cp=None):
     for i,cnx in enumerate(cnxs):
         cursor=cnx.cursor()
@@ -270,8 +282,9 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
             
 #if __name__=='__main__':
 
-#    import database
-#    sucursales,cnxs=database.init_databases()
+    import database
+    sucursales,cnxs=database.init_databases()
 #    buscar_cliente(cnxs,calle='calle',colonia='colonia',estado='de ebriedad',cp='58000')
 #    buscar_cliente(cnxs,rfc='1234561')
-#    inDatabase(sucursales,cnxs,'juancho','luis','ruis','1234561')   
+#    inDatabase(sucursales,cnxs,'juancho','luis','ruis','1234561')  
+#    all_client(sucursales,cnxs)

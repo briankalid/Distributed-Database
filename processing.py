@@ -181,18 +181,18 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
                 datos=cursor.fetchall()
                 
                 print('\n',datos,'\n')
-                print('Son correctos los datos?')
-                mod=input('si/no: ')
+                #print('Son correctos los datos?')
+                #mod=input('si/no: ')
                 
-                if mod=='si':
-                    return True
+                #if mod=='si':
+                #    return True
 
+                #else:
+                mod=input('\nQuieres modificarlos? si/no: ')
+                if mod == 'si':
+                    update_cliente(cnx,clientes[res-1],datos)
                 else:
-                    mod=input('\nQuieres modificarlos? si/no: ')
-                    if mod == 'si':
-                        update_cliente(cnx,clientes[res-1],datos)
-                    else:
-                        break
+                    break
 
             else:
                 print('No se encontro')
@@ -218,18 +218,18 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
                 datos=cursor.fetchall()
                 
                 print('\n',datos,'\n')
-                print('Son correctos los datos?')
-                mod=input('si/no: ')
+                #print('Son correctos los datos?')
+                #mod=input('si/no: ')
                 
-                if mod=='si':
-                    return True
+                #if mod=='si':
+                 #   return True
 
+                #else:
+                mod=input('Quieres modificarlos? si/no: ')
+                if mod == 'si':
+                    update_cliente(cnx,clientes[res-1],datos)
                 else:
-                    mod=input('Quieres modificarlos? si/no: ')
-                    if mod == 'si':
-                        update_cliente(cnx,clientes[res-1],datos)
-                    else:
-                        break
+                    break
             else:
                 print('No se encontro')
  
@@ -262,18 +262,18 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
                 datos=cursor.fetchall()
                 
                 print(datos,'\n')
-                print('Son correctos los datos?')
-                mod=input('si/no: ')
+                #print('Son correctos los datos?')
+                #mod=input('si/no: ')
                 
-                if mod=='si':
-                    return True
+                #if mod=='si':
+                #    return True
 
+                #else:
+                mod=input('\nQuieres modificarlos? si/no: ')
+                if mod == 'si':
+                    update_cliente(cnx,datos[res-1],clientes)
                 else:
-                    mod=input('\nQuieres modificarlos? si/no: ')
-                    if mod == 'si':
-                        update_cliente(cnx,datos[res-1],clientes)
-                    else:
-                        break
+                    break
             else:
                 print('No se encontro')
  
@@ -282,8 +282,8 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
             
 #if __name__=='__main__':
 
-    import database
-    sucursales,cnxs=database.init_databases()
+    #import database
+    #sucursales,cnxs=database.init_databases()
 #    buscar_cliente(cnxs,calle='calle',colonia='colonia',estado='de ebriedad',cp='58000')
 #    buscar_cliente(cnxs,rfc='1234561')
 #    inDatabase(sucursales,cnxs,'juancho','luis','ruis','1234561')  

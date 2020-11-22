@@ -67,7 +67,6 @@ def description(cnx):
     cursor.execute(query)
     #cnx.commit()
     tablas=[i[0] for i in cursor.fetchall()]
-    print(tablas) 
     columns=[]
 
     for elemento in tablas:
@@ -76,9 +75,12 @@ def description(cnx):
         #print(tuple(data_query))
         cursor.execute(query)
         columns.append(cursor.fetchall())
-    print(columns)
-if __name__=='__main__':
 
-    sucursales,cnxs=init_databases()
+    return tablas,columns
 
-    description(cnxs[0])
+
+#if __name__=='__main__':
+
+#    sucursales,cnxs=init_databases()
+
+#    description(cnxs[0])

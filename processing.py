@@ -20,7 +20,6 @@ def update_cliente(cnx,datos,datos_dom):
     datos=list(datos)
     datos.append(datos[0])
     datos_dom=list(datos_dom)
-    #print('asdjhakhdkashd',datos,datos_dom)
     clt=['Nombre','Apellido_Paterno','Apellido_Materno','RFC']
     dr=['Calle','Colonia','Estado','CP']
 
@@ -48,12 +47,10 @@ def update_cliente(cnx,datos,datos_dom):
                     aux.append(clt[elemento-1])
             for i,e in enumerate(aux):
                 dataux.append(input('Nuevo '+e+': '))
-            #print(dataux)
 
             query="""UPDATE Clientes SET Id = %s, Nombre = %s, Apellido_Paterno = %s, Apellido_Materno = %s, RFC = %s WHERE id=%s"""
             for i,elemento in enumerate(lista):
                 datos[elemento]=dataux[i]
-            #print(datos)
             data_query=tuple(datos)
             cursor=cnx.cursor()
             cursor.execute(query,data_query)
@@ -77,12 +74,10 @@ def update_cliente(cnx,datos,datos_dom):
                     aux.append(dr[elemento-1])
             for i,e in enumerate(aux):
                 dataux.append(input('Nuevo '+e+': '))
-            #print(dataux)
 
             query="""UPDATE Direcciones SET Calle = %s, Colonia = %s, Estado = %s, CP = %s WHERE Id_Cliente=%s"""
             for i,elemento in enumerate(lista):
                 datos_dom[elemento-1]=dataux[i]
-            #print(datos_dom)
             data_query=tuple(datos_dom)
             cursor=cnx.cursor()
             cursor.execute(query,data_query)
@@ -181,13 +176,6 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
                 datos=cursor.fetchall()
                 
                 print('\n',datos,'\n')
-                #print('Son correctos los datos?')
-                #mod=input('si/no: ')
-                
-                #if mod=='si':
-                #    return True
-
-                #else:
                 mod=input('\nQuieres modificarlos? si/no: ')
                 if mod == 'si':
                     update_cliente(cnx,clientes[res-1],datos)
@@ -218,13 +206,6 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
                 datos=cursor.fetchall()
                 
                 print('\n',datos,'\n')
-                #print('Son correctos los datos?')
-                #mod=input('si/no: ')
-                
-                #if mod=='si':
-                 #   return True
-
-                #else:
                 mod=input('Quieres modificarlos? si/no: ')
                 if mod == 'si':
                     update_cliente(cnx,clientes[res-1],datos)
@@ -246,7 +227,6 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
             query="SELECT * FROM Direcciones WHERE Calle = '%s' and Colonia = '%s' and Estado = '%s' and CP = %s" %(calle,colonia,estado,cp)
             cursor.execute(query)
             clientes=cursor.fetchall()
-            #print('es este show',list(clientes))
             if len(clientes)>0:    
                 print('Cual es?\n')
 
@@ -262,13 +242,6 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
                 datos=cursor.fetchall()
                 
                 print(datos,'\n')
-                #print('Son correctos los datos?')
-                #mod=input('si/no: ')
-                
-                #if mod=='si':
-                #    return True
-
-                #else:
                 mod=input('\nQuieres modificarlos? si/no: ')
                 if mod == 'si':
                     update_cliente(cnx,datos[res-1],clientes)
@@ -280,11 +253,3 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
             break
 
             
-#if __name__=='__main__':
-
-    #import database
-    #sucursales,cnxs=database.init_databases()
-#    buscar_cliente(cnxs,calle='calle',colonia='colonia',estado='de ebriedad',cp='58000')
-#    buscar_cliente(cnxs,rfc='1234561')
-#    inDatabase(sucursales,cnxs,'juancho','luis','ruis','1234561')  
-#    all_client(sucursales,cnxs)

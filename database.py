@@ -79,8 +79,3 @@ def description(cnx):
     return tablas,columns
 
 
-#if __name__=='__main__':
-
-#    sucursales,cnxs=init_databases()
-
-#    description(cnxs[0])

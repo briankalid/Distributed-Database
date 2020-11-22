@@ -9,13 +9,8 @@ This proyect is under GPL-3.0 License
 import database
 import processing
 
-#cnx_morelia=database.morelia()
-#cnx_patzcuaro=database.patzcuaro()
-
-#print(processing.prueba(cnx_morelia))
 
 sucursales,cnxs = database.init_databases()
-#print(sucursales,cnxs)
 
 
 #--- Menu ---#
@@ -80,35 +75,22 @@ if __name__=='__main__':
         operacion =  Operacion()
         
         if operacion == 1:
-            #def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp)
             #Checar si los datos a dar de alta ya esta en algunda de las db
-            #NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = Datos_registrar_cliente()
             NOMBRE=input("\n\t Nombre: ")
-            #NOMBRE = input()
             AP=input("\n\t Apellido Paterno: ")
-            #AP = input()
             AM=input("\n\t Apellido Materno: ")
-            #AM = input()
             RFC=input("\n\t RFC: ")
-            #RFC = input()
             
             if( not processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
                 #Dar de alta 
                 CALLE=input("\n\t Calle: ")
-                #CALLE = input()
                 COLONIA=input("\n\t Colonia: ")
-                #COLONIA = input()
                 ESTADO=input("\n\t Estado: ")
-                #ESTADO = input()
                 CP=input("\n\t Codigo Postal: ")
-                #CP = input()
                 processing.registrar_cliente(cnxs[sucursal-1],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
             
         elif operacion == 2:
             #2.- Actualizar datos de los clientes y direcciones
-            #def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,domicilio=None):
-            #NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = Datos_registrar_cliente()
-            #processing.buscar_cliente(cnxs,NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
             opcion_busqueda = Buscar_cliente(up=True)
             if opcion_busqueda == 1: #Por nombre
                 NOMBRE = input('\n\t Nombre: ')
@@ -122,13 +104,9 @@ if __name__=='__main__':
                 
             elif opcion_busqueda == 3: #Por Direccion
                 CALLE = input("\n\t Calle: ")
-                #CALLE = input()
                 COLONIA = input("\n\t Colonia: ")
-                #COLONIA = input()
                 ESTADO=input("\n\t Estado: ")
-                #ESTADO = input()
                 CP=input("\n\t Codigo Postal: ")
-                #CP = input()
                 processing.buscar_cliente(cnxs,calle=CALLE,colonia=COLONIA,estado=ESTADO,cp=CP)
                 
              
@@ -147,13 +125,9 @@ if __name__=='__main__':
                 
             elif opcion_busqueda == 3: #Por Direccion
                 CALLE=input("\n\t Calle: ")
-                #CALLE = input()
                 COLONIA=input("\n\t Colonia: ")
-                #COLONIA = input()
                 ESTADO=input("\n\t Estado: ")
-                #ESTADO = input()
                 CP=input("\n\t Codigo Postal: ")
-                #CP = input()
                 processing.buscar_cliente(cnxs,calle=CALLE,colonia=COLONIA,estado=ESTADO,cp=CP)
                 
             elif opcion_busqueda == 4: #Listado Completo

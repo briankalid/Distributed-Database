@@ -129,6 +129,9 @@ def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
             #return True
     return False
 
+
+
+
 def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
     cursor = cnx.cursor()
     id = generate_id("U")
@@ -142,3 +145,43 @@ def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
     cnx.commit()
     print('Cliente registrado con exito')
 
+
+
+def buscar_cliente(cnxs,nombre=None,rfc=None,domicilio=None):
+    for i,cnx in enumerate(cnxs):
+        cursor=cnx.cursor()
+        if nombre:
+            query="SELECT * FROM Clientes WHERE Nombre = '%s'" %nombre
+            cursor.execute(query)
+            print(cursor.fetchall())
+            break
+
+
+            print('hola')
+
+        elif rfc:
+            query="SELECT * FROM Clientes WHERE RFC = '%s'" %rfc
+            cursor.execute(query)
+            print(cursor.fetchall())
+            break
+
+            
+
+            print('rfc')
+
+
+        elif domicilio:
+            print('sabra dios')
+            break
+
+
+
+            print('rfc')
+
+if __name__=='__main__':
+
+    import database
+    sucursales,cnxs=database.init_databases()
+
+    buscar_cliente(cnxs,rfc='1234561')
+    

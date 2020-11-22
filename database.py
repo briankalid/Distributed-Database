@@ -61,4 +61,24 @@ def init_databases():
 
     return sucursales,cnxs
 
+def description(cnx):
+    cursor=cnx.cursor()
+    query="""SHOW TABLES"""
+    cursor.execute(query)
+    #cnx.commit()
+    tablas=[i[0] for i in cursor.fetchall()]
+    print(tablas) 
+    columns=[]
 
+    for elemento in tablas:
+        query="DESCRIBE %s" % elemento 
+        #data_query=elemento
+        #print(tuple(data_query))
+        cursor.execute(query)
+        columns.append(cursor.fetchall())
+    print(columns)
+if __name__=='__main__':
+
+    sucursales,cnxs=init_databases()
+
+    description(cnxs[0])

@@ -17,9 +17,9 @@ def generate_id(UG):
 
 def update_cliente(cnx,datos,datos_dom):
     still=True
-    datos=list(datos[0])
+    datos=list(datos)
     datos.append(datos[0])
-    datos_dom=list(datos_dom[0])
+    datos_dom=list(datos_dom)
     #print('asdjhakhdkashd',datos,datos_dom)
     clt=['Nombre','Apellido_Paterno','Apellido_Materno','RFC']
     dr=['Calle','Colonia','Estado','CP']
@@ -42,7 +42,7 @@ def update_cliente(cnx,datos,datos_dom):
             aux=[]
             dataux=[]
             for elemento in lista:
-                if elemento ==len(ctl)+1:
+                if elemento ==len(clt)+1:
                     break
                 else:
                     aux.append(clt[elemento-1])
@@ -107,7 +107,7 @@ def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
         if(len(resp))>0:
             print('Ya existe en la base de datos de',sucursales[i])
             print('Los siguientes datos son correctos?')
-            print(resp)
+            print('es este show',resp)
             query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
 
            
@@ -123,7 +123,7 @@ def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
             else:
                 mod=input('Quieres modificarlos? si/no: ')
                 if mod == 'si':
-                    update_cliente(cnx,resp,datos)
+                    update_cliente(cnx,resp[0],datos)
                 else:
                     return True
             #return True
@@ -181,12 +181,16 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,domicilio=None):
                         update_cliente(cnx,clientes[res-1],datos)
                     else:
                         break
+
+            else:
+                print('No se encontro')
             break
 
         elif rfc:
             query="SELECT * FROM Clientes WHERE RFC = '%s'" %rfc
             cursor.execute(query)
             clientes=cursor.fetchall()
+            print('es este show',list(clientes[0]))
             if len(clientes)>0:    
                 print('Cual es?')
 
@@ -214,6 +218,8 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,domicilio=None):
                         update_cliente(cnx,clientes[res-1],datos)
                     else:
                         break
+            else:
+                print('No se encontro')
  
             break
 
@@ -222,6 +228,10 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,domicilio=None):
 
 
         elif domicilio:
+            
+
+
+
             print('sabra dios')
             break
 
@@ -235,4 +245,4 @@ if __name__=='__main__':
     sucursales,cnxs=database.init_databases()
 
     buscar_cliente(cnxs,rfc='1234561')
-    
+#    inDatabase(sucursales,cnxs,'juancho','luis','ruis','1234561')   

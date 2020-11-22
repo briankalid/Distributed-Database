@@ -151,12 +151,37 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,domicilio=None):
     for i,cnx in enumerate(cnxs):
         cursor=cnx.cursor()
         if nombre:
-            print(nombre)
+            #print(nombre)
             query="SELECT * FROM Clientes WHERE Nombre = '%s' and Apellido_Paterno ='%s' and Apellido_Materno='%s'" %(nombre,ap,am)
             cursor.execute(query)
-            print(cursor.fetchall())
+            clientes=cursor.fetchall()
+            if len(clientes)>0:    
+                print('Cual es?')
 
-            break
+                for j,cliente in enumerate(clientes):
+                    print(str(i+1)+'.',cliente)
+
+                res=int(input())
+                query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
+
+               
+
+                cursor.execute(query,(clientes[res-1][0],))
+                datos=cursor.fetchall()
+                
+                print(datos)
+                print('Son correctos los datos?')
+                mod=input('si/no: ')
+                
+                if mod=='si':
+                    return True
+
+                else:
+                    mod=input('Quieres modificarlos? si/no: ')
+                    if mod == 'si':
+                        update_cliente(cnx,clientes[res-1],datos)
+                    else:
+                        return True
 
 
 
@@ -183,5 +208,5 @@ if __name__=='__main__':
     import database
     sucursales,cnxs=database.init_databases()
 
-    buscar_cliente(cnxs,nombre="juancho",ap='luis',am='ruis')
+    buscar_cliente(cnxs,nombre="jjuancho",ap='luis',am='ruis')
     

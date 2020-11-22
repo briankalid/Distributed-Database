@@ -119,9 +119,10 @@ def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
                 mod=input('\nQuieres modificarlos? si/no: ')
                 if mod == 'si':
                     update_cliente(cnx,resp[0],datos)
+                    return True
                 else:
                     return True
-            #return True
+            return True
     return False
 
 

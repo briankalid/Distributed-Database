@@ -38,80 +38,59 @@ def Operacion():
     print('\n\t \n\t Opciones: \n\t\t 1.- Insertar nuevos clientes y direcciones \n\t\t')
     print('\n\t\t 2.- Actualizar datos de los clientes y direcciones \n\t\t')
     print('\n\t\t 3.- Buscar Clientes por nombre, RFC, o domicilio desde cualquier sucursal \n\t\t')
+    print('\n\t\t 4.- Salir \n\t\t')
 
     try:
         operacion = int(input())
-        if (operacion<1 or operacion>3):
+        if (operacion<1 or operacion>4):
             print("< OPCION INVALIDA >")
         else: return ( operacion )
     except:
         print("< OPCION INVALIDA >")
 
 def Buscar_cliente():
-    print ("\n\t Buscar cliente por: \n 1.- Nombre \n 2.- RFC \n 3.- Domicilio")
+    print ("\n\t Buscar cliente por: \n 1.- Nombre \n 2.- RFC \n 3.- Domicilio \n 4.- Listado Completo")
     try: 
         opcion_busqueda = int(input())
-        if (opcion_busqueda<1 or opcion_busqueda>3):
+        if (opcion_busqueda<1 or opcion_busqueda>4):
             print("< OPCION INVALIDA >")
         else: return(opcion_busqueda)
     except: 
         print("< OPCION INVALIDA >")
         
 
-def Datos_registrar_cliente():
-    print("\n\t Nombre: ")
-    NOMBRE = input()
-    print("\n\t Apellido Paterno: ")
-    AP = input()
-    print("\n\t Apellido Materno: ")
-    AM = input()
-    print("\n\t RFC: ")
-    RFC = input()
-    print("\n\t Calle: ")
-    CALLE = input()
-    print("\n\t Colonia: ")
-    COLONIA = input()
-    print("\n\t Estado: ")
-    ESTADO = input()
-    print("\n\t Codigo Postal: ")
-    CP = input()
-    
-    return (NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
-
-def Datos_buscaar_cliente():
-    print("\n\t Nombre: ")
-    NOMBRE = input()
-    print("\n\t Apellido Paterno: ")
-    AP = input()
-    print("\n\t Apellido Materno: ")
-    AM = input()
-    print("\n\t RFC: ")
-    RFC = input()
-    print("\n\t Calle: ")
-    CALLE = input()
-    print("\n\t Colonia: ")
-    COLONIA = input()
-    print("\n\t Estado: ")
-    ESTADO = input()
-    print("\n\t Codigo Postal: ")
-    CP = input()
-
 if __name__=='__main__':
     #primero necesitamos saber de que sucursal es
-    sucursal = Sucursal() 
-
-    if (sucursal == 1):   
-        sucursal = "Morelia"
+    SERVICE_ON = True
+        
+    while SERVICE_ON:
+        sucursal = Sucursal() 
         operacion =  Operacion()
         
         if operacion == 1:
             #def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp)
             #Checar si los datos a dar de alta ya esta en algunda de las db
-            NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = Datos_registrar_cliente()
+            #NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = Datos_registrar_cliente()
+            print("\n\t Nombre: ")
+            NOMBRE = input()
+            print("\n\t Apellido Paterno: ")
+            AP = input()
+            print("\n\t Apellido Materno: ")
+            AM = input()
+            print("\n\t RFC: ")
+            RFC = input()
             
             if( not processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
                 #Dar de alta 
-                processing.registrar_cliente(cnxs[0],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
+                print("\n\t Calle: ")
+                CALLE = input()
+                print("\n\t Colonia: ")
+                COLONIA = input()
+                print("\n\t Estado: ")
+                ESTADO = input()
+                print("\n\t Codigo Postal: ")
+                CP = input()
+                processing.registrar_cliente(cnxs[sucursal-1],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
             
         elif operacion == 2:
             #2.- Actualizar datos de los clientes y direcciones
@@ -123,35 +102,28 @@ if __name__=='__main__':
             #buscar clientes
             opcion_busqueda = Buscar_cliente()
             if opcion_busqueda == 1: #Por nombre
-                NOMBRE=input('Nombre: ')
-                AP=input('Apellido Paterno: ')
-                AM=input('Apellido Materno: ')
+                NOMBRE = input('\n\t Nombre: ')
+                AP = input('\n\t Apellido Paterno: ')
+                AM = input('\n\t Apellido Materno: ')
                 processing.buscar_cliente(cnxs,nombre=NOMBRE,ap=AP,am=AM)
                 
             elif opcion_busqueda == 2: #Por RFC
+                RFC = input('\n\t RFC: ')
                 processing.buscar_cliente(cnxs,RFC)
                 
             elif opcion_busqueda == 3: #Por Direccion
+                print("\n\t Calle: ")
+                CALLE = input()
+                print("\n\t Colonia: ")
+                COLONIA = input()
+                print("\n\t Estado: ")
+                ESTADO = input()
+                print("\n\t Codigo Postal: ")
+                CP = input()
                 processing.buscar_cliente(cnxs,CALLE,COLONIA,ESTADO,CP)
                 
+            #elif opcion_busqueda == 4: #Listado Completo
                 
-    elif (sucursal == 2): 
-        sucursal = "Patzcuaro"
-        operacion =  Operacion()
-        if operacion == 1:
-            #def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp)
-            #Checar si los datos a dar de alta ya esta en algunda de las db
-            NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP = Datos_registrar_cliente()
-            
-            if( not processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
-                #Dar de alta 
-                processing.registrar_cliente(cnxs[1],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
-            
-        #elif operacion == 2:
-            #Actualizar datos
-        
-        elif operacion == 3:
-            #buscar clientes
-            opcion_busqueda = Buscar_cliente()
-            #if opcion_busqueda == 1: #Por nombre
-        
+        elif operacion == 4: 
+            SERVICE_ON = False
+                    

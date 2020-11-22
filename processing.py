@@ -251,7 +251,7 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
                 print('Cual es?\n')
 
                 for j,cliente in enumerate(clientes):
-                    print(str(i+1)+'.',cliente+'\n')
+                    print(str(i+1)+'.',cliente,'\n')
 
                 res=int(input())
                 query="""SELECT * FROM Clientes Where Id=%s"""
@@ -261,7 +261,7 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=
                 cursor.execute(query,(clientes[res-1][-1],))
                 datos=cursor.fetchall()
                 
-                print(datos+'\n')
+                print(datos,'\n')
                 print('Son correctos los datos?')
                 mod=input('si/no: ')
                 

@@ -59,6 +59,7 @@ def Buscar_cliente():
         
 
 def Datos_registrar_cliente():
+    datos = []
     print("\n\t Nombre: ")
     NOMBRE = input()
     print("\n\t Apellido Paterno: ")

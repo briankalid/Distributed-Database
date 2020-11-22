@@ -147,17 +147,18 @@ def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
 
 
 
-def buscar_cliente(cnxs,nombre=None,rfc=None,domicilio=None):
+def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,domicilio=None):
     for i,cnx in enumerate(cnxs):
         cursor=cnx.cursor()
         if nombre:
-            query="SELECT * FROM Clientes WHERE Nombre = '%s'" %nombre
+            print(nombre)
+            query="SELECT * FROM Clientes WHERE Nombre = '%s' and Apellido_Paterno ='%s' and Apellido_Materno='%s'" %(nombre,ap,am)
             cursor.execute(query)
             print(cursor.fetchall())
+
             break
 
 
-            print('hola')
 
         elif rfc:
             query="SELECT * FROM Clientes WHERE RFC = '%s'" %rfc
@@ -167,7 +168,6 @@ def buscar_cliente(cnxs,nombre=None,rfc=None,domicilio=None):
 
             
 
-            print('rfc')
 
 
         elif domicilio:
@@ -183,5 +183,5 @@ if __name__=='__main__':
     import database
     sucursales,cnxs=database.init_databases()
 
-    buscar_cliente(cnxs,rfc='1234561')
+    buscar_cliente(cnxs,nombre="juancho",ap='luis',am='ruis')
     

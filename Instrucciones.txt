@@ -1,0 +1,43 @@
+Para poder hacer importar las bases de datos:
+    Primero debes iniciar el servicio de MariaDB:
+        sudo systemctl start mariadb
+
+    Seguido de crear las bases de datos:
+        mysql -u <usuario> -p   #El usuario debe tener privilegios para crear bases de datos
+        
+        MariaDB > CREATE DATABASE Morelia;
+        MariaDB > CREATE DATABASE Patzcuaro;
+        
+    Ahora debes de salir de MariaDB:
+        CTRL + D
+    
+    Desde la terminal, ve al directorio donde tienes los archivos *dump.sql e impórtalos:
+        mysql -u <usuario> -p Morelia < data-Morelia-dump.sql
+        mysql -u <usuario> -p Morelia < data-Patzcuaro-dump.sql
+        
+IMPORTANTE:
+    Nuestro sistema tiene posibilidad de escalamiento a N sucursales, por lo que hemos creado una base de datos que contiene las credenciales para cada sucursal. Por cuestiones de seguridad hemos decidido que esta base de datos sea centralizada y que sólo el administrador pueda tener acceso a ella.
+    
+    Para crear esta base de datos: 
+        MariaDB > DATABASE credential;
+        
+    Por motivos de seguridad, no incluiremos el archivo *dump.sql. En cambio, haremos la descripcion de la tabla.
+    
+        +----------+--------------+------+-----+---------+-------+
+        | Field    | Type         | Null | Key | Default | Extra |
+        +----------+--------------+------+-----+---------+-------+
+        | sucursal | varchar(100) | NO   | PRI | NULL    |       |
+        | user     | varchar(100) | NO   |     | NULL    |       |
+        | password | varchar(100) | NO   |     | NULL    |       |
+        | host     | varchar(200) | NO   |     | NULL    |       |
+        | namedb   | varchar(100) | NO   |     | NULL    |       |
+        +----------+--------------+------+-----+---------+-------+
+        
+    La tabla debe ir en el siguiente formato:
+    
+        +-----------+------+------------+-----------+-----------+
+        | sucursal  | user | password   | host      | namedb    |
+        +-----------+------+------------+-----------+-----------+
+        | Morelia   | **** | ********** | localhost |  Morelia  |
+        | Patzcuaro | **** | ********** | localhost | Patzcuaro |
+        +-----------+------+------------+-----------+-----------+

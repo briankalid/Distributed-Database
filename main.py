@@ -62,9 +62,8 @@ def Buscar_cliente():
 if __name__=='__main__':
     #primero necesitamos saber de que sucursal es
     SERVICE_ON = True
-        
+    sucursal = Sucursal() 
     while SERVICE_ON:
-        sucursal = Sucursal() 
         operacion =  Operacion()
         
         if operacion == 1:

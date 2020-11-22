@@ -147,7 +147,7 @@ def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
 
 
 
-def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,domicilio=None):
+def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=None,estado=None,cp=None):
     for i,cnx in enumerate(cnxs):
         cursor=cnx.cursor()
         if nombre:
@@ -227,8 +227,50 @@ def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,domicilio=None):
 
 
 
-        elif domicilio:
+        elif calle:
+
+
             
+            query="SELECT * FROM Direcciones WHERE Calle = '%s' and Colonia = '%s' and Estado = '%s' and CP = %s" %(calle,colonia,estado,cp)
+            cursor.execute(query)
+            clientes=cursor.fetchall()
+            print('es este show',list(clientes))
+            if len(clientes)>0:    
+                print('Cual es?')
+
+                for j,cliente in enumerate(clientes):
+                    print(str(i+1)+'.',cliente)
+
+                res=int(input())
+                query="""SELECT * FROM Clientes Where Id=%s"""
+
+               
+
+                cursor.execute(query,(clientes[res-1][-1],))
+                datos=cursor.fetchall()
+                
+                print(datos)
+                print('Son correctos los datos?')
+                mod=input('si/no: ')
+                
+                if mod=='si':
+                    return True
+
+                else:
+                    mod=input('Quieres modificarlos? si/no: ')
+                    if mod == 'si':
+                        update_cliente(cnx,datos[res-1],clientes)
+                    else:
+                        break
+            else:
+                print('No se encontro')
+ 
+            break
+
+            
+
+
+
 
 
 
@@ -243,6 +285,6 @@ if __name__=='__main__':
 
     import database
     sucursales,cnxs=database.init_databases()
-
-    buscar_cliente(cnxs,rfc='1234561')
+    buscar_cliente(cnxs,calle='calle',colonia='colonia',estado='de ebriedad',cp='58000')
+#    buscar_cliente(cnxs,rfc='1234561')
 #    inDatabase(sucursales,cnxs,'juancho','luis','ruis','1234561')   

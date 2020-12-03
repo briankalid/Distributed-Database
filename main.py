@@ -121,7 +121,7 @@ if __name__=='__main__':
                 
             elif opcion_busqueda == 2: #Por RFC
                 RFC = input('\n\t RFC: ')
-                processing.buscar_cliente(cnxs,RFC)
+                processing.buscar_cliente(cnxs,rfc=RFC)
                 
             elif opcion_busqueda == 3: #Por Direccion
                 CALLE=input("\n\t Calle: ")
@@ -135,4 +135,5 @@ if __name__=='__main__':
                 
         elif operacion == 4: 
             SERVICE_ON = False
-                    
+            for cnx in cnxs:
+                cnx.close()

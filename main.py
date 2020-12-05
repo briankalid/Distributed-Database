@@ -38,7 +38,7 @@ def Operacion():
 
     try:
         operacion = int(input())
-        if (operacion<1 or operacion>4):
+        if (operacion<1 or operacion>5):
             print("< OPCION INVALIDA >")
         else: return ( operacion )
     except:
@@ -77,18 +77,18 @@ if __name__=='__main__':
         
         if operacion == 1:
             #Checar si los datos a dar de alta ya esta en algunda de las db
-            NOMBRE=input("\n\t Nombre: ")
-            AP=input("\n\t Apellido Paterno: ")
-            AM=input("\n\t Apellido Materno: ")
-            RFC=input("\n\t RFC: ")
+            #NOMBRE=input("\n\t Nombre: ")
+            #AP=input("\n\t Apellido Paterno: ")
+            #AM=input("\n\t Apellido Materno: ")
+            #RFC=input("\n\t RFC: ")
             
-            if( not processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
+            #if( not processing.inDatabase(sucursales,cnxs,NOMBRE,AP,AM,RFC) ): #if not in databases
                 #Dar de alta 
-                CALLE=input("\n\t Calle: ")
-                COLONIA=input("\n\t Colonia: ")
-                ESTADO=input("\n\t Estado: ")
-                CP=input("\n\t Codigo Postal: ")
-                processing.registrar_cliente(cnxs[sucursal-1],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
+                #CALLE=input("\n\t Calle: ")
+                #COLONIA=input("\n\t Colonia: ")
+                #ESTADO=input("\n\t Estado: ")
+                #CP=input("\n\t Codigo Postal: ")
+            processing.registrar_cliente(sucursales,cnxs,cnxs[sucursal-1])
             
         elif operacion == 2:
             processing.buscar_clientes(sucursales,cnxs)

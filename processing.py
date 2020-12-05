@@ -130,13 +130,14 @@ def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
 
 
 
-def registrar_cliente(cnx):
+def registrar_cliente(sucursales,cnxs,cnx):
     cursor=cnx.cursor()
     tables,descrip_tables=database.description(cnx)
     id_=generate_id("U")
     print('Utiliza el siguiente id para los registros:',id_)
 
     for i,table in enumerate(tables):
+        chekin=[]
         query="INSERT INTO %s("%table
         for c,data in enumerate(descrip_tables[i]):
             datos=data[0]
@@ -149,14 +150,21 @@ def registrar_cliente(cnx):
         for c,data in enumerate(descrip_tables[i]):
             datos=data[0]
             aux=input(datos+': ')
+            chekin.append(aux)
             if c != len(descrip_tables[i])-1:
                 query+="'%s',"%aux
             else:
                 query+="'%s'"%aux
         query+=""")"""
-        print(query)
-        cursor.execute(query)
-        cnx.commit()
+        if table == 'Clientes':
+            if(not inDatabase(sucursales,cnxs,chekin[1],chekin[2],chekin[3],chekin[4])):
+
+                print(query)
+                cursor.execute(query)
+                cnx.commit()
+            else:
+                break
+            
         
 
 

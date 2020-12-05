@@ -15,11 +15,13 @@ def generate_id(UG):
 
 
 
-def update_cliente(cnx,datos,datos_dom):
+def update_cliente(datos):
+    print(datos)
+    cnx=datos[0]
     still=True
-    datos=list(datos)
+    datos=list(datos[1])
     datos.append(datos[0])
-    datos_dom=list(datos_dom)
+    datos_dom=list(datos[2][0])
     clt=['Nombre','Apellido_Paterno','Apellido_Materno','RFC']
     dr=['Calle','Colonia','Estado','CP']
 
@@ -128,18 +130,34 @@ def inDatabase(sucursales,cnxs,nombre,ap,am,rfc):
 
 
 
-def registrar_cliente(cnx,nombre,ap,am,rfc,calle,col,est,cp):
-    cursor = cnx.cursor()
-    id = generate_id("U")
-    query = """INSERT INTO Clientes(Id,Nombre,Apellido_Paterno,Apellido_Materno,RFC) VALUES (%s,%s,%s,%s,%s)"""
-    data_query = (id,nombre,ap,am,rfc)
-    cursor.execute(query,data_query)
-    cnx.commit()
-    query = """INSERT INTO Direcciones(Calle,Colonia,Estado,CP,Id_Cliente) VALUES(%s,%s,%s,%s,%s)"""
-    data_query=(calle,col,est,cp,id)
-    cursor.execute(query,data_query)
-    cnx.commit()
-    print('Cliente registrado con exito')
+def registrar_cliente(cnx):
+    cursor=cnx.cursor()
+    tables,descrip_tables=database.description(cnx)
+    id_=generate_id("U")
+    print('Utiliza el siguiente id para los registros:',id_)
+
+    for i,table in enumerate(tables):
+        query="INSERT INTO %s("%table
+        for c,data in enumerate(descrip_tables[i]):
+            datos=data[0]
+            if c != len(descrip_tables[i])-1:
+                query+="%s,"%datos
+            else:
+                query+="%s"%datos
+
+        query+=") VALUES("
+        for c,data in enumerate(descrip_tables[i]):
+            datos=data[0]
+            aux=input(datos+': ')
+            if c != len(descrip_tables[i])-1:
+                query+="'%s',"%aux
+            else:
+                query+="'%s'"%aux
+        query+=""")"""
+        print(query)
+        cursor.execute(query)
+        cnx.commit()
+        
 
 
 
@@ -279,6 +297,7 @@ def buscar_clientes(sucursales,cnxs):
         if len(datos)>0:
             #print(datos)
             clientes_T=[]
+            clienteselct=[]
             for c,cnx in enumerate(cnxs):
                 cursor=cnx.cursor()
                 #print(query)
@@ -288,17 +307,64 @@ def buscar_clientes(sucursales,cnxs):
 
                 cursor.execute(query,tuple(datos))
                 clientes=cursor.fetchall()
-                clientes_T.append([c,clientes])
+                if len(clientes)>0:
+                    clientes_T.append([c,clientes])
             if opcion_busqueda==3:
+                p=1
                 for elemento in clientes_T:
                     for registro in elemento[1]:
-                        print(sucursales[elemento[0]],registro)
+                        print(str(p)+'.',sucursales[elemento[0]],registro)
                         nquery="SELECT * FROM Clientes WHERE Id = '%s'"%registro[-1]
                         cursor=cnxs[elemento[0]].cursor()
                         cursor.execute(nquery)
-                        print(cursor.fetchall(),'\n')
+                        p+=1
+                        aux=cursor.fetchall()
+                        clienteselct.append(aux)
+                        print(aux,'\n')
+                selection=int(input('Cual es? '))
+
+
+            if opcion_busqueda==2:
+                p=1
+                for elemento in clientes_T:
+                    for registro in elemento[1]:
+                        print(str(p)+'.',sucursales[elemento[0]],registro)
+                        nquery="SELECT * FROM Direcciones WHERE Id_Cliente = '%s'"%registro[0]
+                        cursor=cnxs[elemento[0]].cursor()
+                        cursor.execute(nquery)
+                        p+=1
+                        aux=cursor.fetchall()
+                        clienteselct.append([cnxs[elemento[0]],registro,aux])
+                        print(aux,'\n')
+                selection=int(input('Cua es? (numero) '))
+
+            if opcion_busqueda==1:
+                p=1
+                for elemento in clientes_T:
+                    for registro in elemento[1]:
+                        print(str(p)+'.',sucursales[elemento[0]],registro)
+                        nquery="SELECT * FROM Direcciones WHERE Id_Cliente = '%s'"%registro[0]
+                        cursor=cnxs[elemento[0]].cursor()
+                        cursor.execute(nquery)
+                        p+=1
+                        aux=cursor.fetchall()
+                        clienteselct.append([cnxs[elemento[0]],registro,aux])
+                        print(aux,'\n')
+                selection=int(input('Cual es? (numero) '))
+
+            
+            print(clienteselct[selection-1])
+            mod=input('Quieres modificar los datos? si/no \n')
+
+            if mod == 'si':
+                update_cliente(clienteselct[selection-1])
+
+            else:
+                pass
                         
 
+        else:
+            print('No se encontro')
 
     except: 
         #print('Hay fallon')
@@ -322,15 +388,6 @@ def create_tables(cnx):
 
     pk=input('Tendra llave primaria? si/no  ')
     fk=input('Tendra llave foranea? si/no  ')
-
-
-   # query="""CREATE TABLE Clientes (
-    #            Id                CHAR(8)      NOT NULL   PRIMARY KEY,
-     #           Nombre            VARCHAR(40)  NOT NULL,
-      #          Apellido_Paterno  VARCHAR(30)  NOT NULL,
-       #         Apellido_Materno  VARCHAR(30)  NOT NULL,
-        #        RFC               VARCHAR(13)  NOT NULL);"""
-
     
     pki=None
     fki=None
@@ -351,7 +408,6 @@ def create_tables(cnx):
             print(str(i+1)+'.',s)
         fks=int(input('Desde donde viene la llave foranea? (numero): '))
 
-    #print(columns[pki-1],columns[fki-1],sets[fks-1])
 
     query="CREATE TABLE %s ("%name
     for i,elemento in enumerate(columns):
@@ -368,7 +424,6 @@ def create_tables(cnx):
                     query+=""")"""
 
         else:
-            #query+="""%s %s,"""
             if i==len(columns)-1:
                 if not fki:
                     query+="%s %s)"%(elemento,typedata[i]) 
@@ -376,18 +431,11 @@ def create_tables(cnx):
                 query+="%s %s,"%(elemento,typedata[i]) 
     
         
-    #print(sets[fks-1])
 
     if fki:
         query+="FOREIGN KEY (%s) REFERENCES %s (%s))"%(columns[fki-1],sets[fks-1][0],sets[fks-1][1][0])
-#FOREIGN KEY (Id_Cliente) REFERENCES  Clientes (Id)
     print(query)
 
-    #datos_to_query=[name]
-    #for j,dat in enumerate(columns):
-     #   datos_to_query.append(dat)
-      #  datos_to_query.append(typedata[j])
-    #print('echale ojo mi cans',datos_to_query)
 
     
 
@@ -402,6 +450,7 @@ if __name__=='__main__':
     for cnx in cnxs:
         print(database.primary_kys(cnx)) 
 
-    create_tables(cnxs)
-    #buscar_clientes(sucursales,cnxs)
+    #registrar_cliente(cnxs[0])
+    #create_tables(cnxs)
+    buscar_clientes(sucursales,cnxs)
 

@@ -1,6 +1,6 @@
 import mysql.connector
 import random
-
+import database
 
 def generate_id(UG):
     letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
@@ -154,103 +154,254 @@ def all_client(sucursales,cnxs):
 
 
 
+def buscar_clientes(sucursales,cnxs):
+    clt=['Nombre','Apellido_Paterno','Apellido_Materno']
+    dr=['Calle','Colonia','Estado','CP']
+    datos=[]
 
-def buscar_cliente(cnxs,nombre=None,ap=None,am=None,rfc=None,calle=None,colonia=None,estado=None,cp=None):
-    for i,cnx in enumerate(cnxs):
+    print ("\n\t Buscar cliente por: \n 1.- Nombre \n 2.- RFC \n 3.- Domicilio \n 4.- Listado Completo")
+    try: 
+        opcion_busqueda = int(input())
+
+        if opcion_busqueda==1:
+
+            print('Elige tus criterios de busqueda')
+            for i,e in enumerate(clt):
+                print(str(i+1)+'.',e)
+            
+            print(str(len(clt)+1)+'. Regresar')
+            print('Hint: Puedes escoger varias opciones a la vez, ejemplo: 1,2,4\n')
+            lista=[int(i)for i in input().split(',')]
+            
+
+            query="""SELECT * FROM Clientes WHERE"""
+            #datos=[]
+            for i,elemento in enumerate(lista):
+                if elemento==1:
+                    datos.append(input('Nombre: '))
+                    if i>0:
+                        query += """ and Nombre = %s"""
+                    else:
+                        query += """ Nombre = %s"""
+                    
+                elif elemento==2:
+                    datos.append(input('Aperllido Paterno: '))
+                    if i>0:
+                        query += """ and Apellido_Paterno = %s"""
+                    else:
+                        query += """ Apellido_Paterno = %s"""
+
+
+                elif elemento==3:
+
+                    datos.append(input('Apellido Materno: '))
+                    if i>0:
+                        query += """ and Apellido_Materno = %s"""
+                    else:
+                        query += """ Apellido_Materno = %s"""
+
+                else:
+                    break
+
+
+
+
+
+
+
+        elif opcion_busqueda==2:
+            query="""SELECT * FROM Clientes WHERE RFC = %s"""
+            rfc=input('RFC: ')
+            #datos=[rfc]
+            datos.append(rfc)
+
+
+        elif opcion_busqueda==3:
+
+            print('Elige tus criterios de busqueda')
+            for i,e in enumerate(dr):
+                print(str(i+1)+'.',e)
+            
+            print(str(len(clt)+1)+'. Regresar')
+            print('Hint: Puedes escoger varias opciones a la vez, ejemplo: 1,2,4\n')
+            lista=[int(i)for i in input().split(',')]
+            
+
+            query="""SELECT * FROM Direcciones WHERE"""
+            #datos=[]
+            for i,elemento in enumerate(lista):
+                if elemento==1:
+                    datos.append(input('Calle: '))
+                    if i>0:
+                        query += """ and Calle = %s"""
+                    else:
+                        query += """ Calle = %s"""
+                    
+                elif elemento==2:
+                    datos.append(input('Colonia: '))
+                    if i>0:
+                        query += """ and Colonia = %s"""
+                    else:
+                        query += """ Colonia = %s"""
+
+
+                elif elemento==3:
+
+                    datos.append(input('Estado: '))
+                    if i>0:
+                        query += """ and Estado = %s"""
+                    else:
+                        query += """ Estado = %s"""
+
+
+                elif elemento==4:
+                    datos.append(input('CP: '))
+                    if i>0:
+                        query += """ and CP = %s"""
+                    else:
+                        query += """ CP = %s"""
+
+                else:
+                    break
+
+
+
+
+
+
+        elif opcion_busqueda==4:
+            all_client(['Morelia','Patzcuar'],cnxs)
+
+
+
+
+
+        if len(datos)>0:
+            #print(datos)
+            clientes_T=[]
+            for c,cnx in enumerate(cnxs):
+                cursor=cnx.cursor()
+                #print(query)
+
+
+
+
+                cursor.execute(query,tuple(datos))
+                clientes=cursor.fetchall()
+                clientes_T.append([c,clientes])
+            if opcion_busqueda==3:
+                for elemento in clientes_T:
+                    for registro in elemento[1]:
+                        print(sucursales[elemento[0]],registro)
+                        nquery="SELECT * FROM Clientes WHERE Id = '%s'"%registro[-1]
+                        cursor=cnxs[elemento[0]].cursor()
+                        cursor.execute(nquery)
+                        print(cursor.fetchall(),'\n')
+                        
+
+
+    except: 
+        #print('Hay fallon')
+        print("< OPCION INVALIDA >")
+        
+
+    
+    #for cnx in cnxs:
+        #print(database.description(cnx))
+
+
+def create_tables(cnx):
+    name=input('Nombre de la tabla(sin espacios): ')
+    n=int(input('Cuantas columnas tendra la tabla? '))
+    columns=[]
+    typedata=[]
+    print('\nEscribe los nombres de las comulmas sin usar espacios')
+    for i in range(n):
+        columns.append(input('Nombre de la columna '+str(i+1)+': '))
+        typedata.append(input('Tipo de dato para la columna '+str(i+1)+'(VARCHAR(50), CHAR(8), etc): '))
+
+    pk=input('Tendra llave primaria? si/no  ')
+    fk=input('Tendra llave foranea? si/no  ')
+
+
+   # query="""CREATE TABLE Clientes (
+    #            Id                CHAR(8)      NOT NULL   PRIMARY KEY,
+     #           Nombre            VARCHAR(40)  NOT NULL,
+      #          Apellido_Paterno  VARCHAR(30)  NOT NULL,
+       #         Apellido_Materno  VARCHAR(30)  NOT NULL,
+        #        RFC               VARCHAR(13)  NOT NULL);"""
+
+    
+    pki=None
+    fki=None
+    fks=None
+
+    if pk == 'si':
+        for i,col in enumerate(columns):
+            print(str(i+1)+'.',col)
+        pki=int(input('Cual columna es llave primaria? (numero): '))
+
+    if fk == 'si':
+        for i,col in enumerate(columns):
+            print(str(i+1)+'.',col)
+
+        fki=int(input('Cual columna es llave foranea? (numero): '))
+        sets=database.primary_kys(cnxs[0])
+        for i,s in enumerate(sets):
+            print(str(i+1)+'.',s)
+        fks=int(input('Desde donde viene la llave foranea? (numero): '))
+
+    #print(columns[pki-1],columns[fki-1],sets[fks-1])
+
+    query="CREATE TABLE %s ("%name
+    for i,elemento in enumerate(columns):
+        if pki:
+            if i == pki-1:
+                query+="%s %s PRIMARY KEY,"%(elemento,typedata[i])
+            else:
+                if i == len(columns)-1:
+                    query+="%s %s"%(elemento,typedata[i]) 
+                else:
+                    query+="%s %s,"%(elemento,typedata[i]) 
+            if i == len(columns)-1:
+                if not fki:
+                    query+=""")"""
+
+        else:
+            #query+="""%s %s,"""
+            if i==len(columns)-1:
+                if not fki:
+                    query+="%s %s)"%(elemento,typedata[i]) 
+            else:
+                query+="%s %s,"%(elemento,typedata[i]) 
+    
+        
+    #print(sets[fks-1])
+
+    if fki:
+        query+="FOREIGN KEY (%s) REFERENCES %s (%s))"%(columns[fki-1],sets[fks-1][0],sets[fks-1][1][0])
+#FOREIGN KEY (Id_Cliente) REFERENCES  Clientes (Id)
+    print(query)
+
+    #datos_to_query=[name]
+    #for j,dat in enumerate(columns):
+     #   datos_to_query.append(dat)
+      #  datos_to_query.append(typedata[j])
+    #print('echale ojo mi cans',datos_to_query)
+
+    
+
+    for cnx in cnxs:
         cursor=cnx.cursor()
-        if nombre:
-            query="SELECT * FROM Clientes WHERE Nombre = '%s' and Apellido_Paterno ='%s' and Apellido_Materno='%s'" %(nombre,ap,am)
-            cursor.execute(query)
-            clientes=cursor.fetchall()
-            if len(clientes)>0:    
-                print('Cual es?\n')
-
-                for j,cliente in enumerate(clientes):
-                    print(str(i+1)+'.',cliente)
-
-                res=int(input())
-                query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
-
-               
-
-                cursor.execute(query,(clientes[res-1][0],))
-                datos=cursor.fetchall()
-                
-                print('\n',datos,'\n')
-                mod=input('\nQuieres modificarlos? si/no: ')
-                if mod == 'si':
-                    update_cliente(cnx,clientes[res-1],datos)
-                else:
-                    break
-
-            else:
-                print('No se encontro')
-            break
-
-        elif rfc:
-            query="SELECT * FROM Clientes WHERE RFC = '%s'" %rfc
-            cursor.execute(query)
-            clientes=cursor.fetchall()
-            print('es este show',list(clientes[0]))
-            if len(clientes)>0:    
-                print('Cual es?')
-
-                for j,cliente in enumerate(clientes):
-                    print(str(i+1)+'.',cliente)
-
-                res=int(input())
-                query="""SELECT * FROM Direcciones Where Id_Cliente=%s"""
-
-               
-
-                cursor.execute(query,(clientes[res-1][0],))
-                datos=cursor.fetchall()
-                
-                print('\n',datos,'\n')
-                mod=input('Quieres modificarlos? si/no: ')
-                if mod == 'si':
-                    update_cliente(cnx,clientes[res-1],datos)
-                else:
-                    break
-            else:
-                print('No se encontro')
- 
-            break
-
-            
+        cursor.execute(query)
+        cnx.commit()
 
 
+if __name__=='__main__':
+    sucursales,cnxs = database.init_databases()
+    for cnx in cnxs:
+        print(database.primary_kys(cnx)) 
 
-        elif calle:
+    create_tables(cnxs)
+    #buscar_clientes(sucursales,cnxs)
 
-
-            
-            query="SELECT * FROM Direcciones WHERE Calle = '%s' and Colonia = '%s' and Estado = '%s' and CP = %s" %(calle,colonia,estado,cp)
-            cursor.execute(query)
-            clientes=cursor.fetchall()
-            if len(clientes)>0:    
-                print('Cual es?\n')
-
-                for j,cliente in enumerate(clientes):
-                    print(str(i+1)+'.',cliente,'\n')
-
-                res=int(input())
-                query="""SELECT * FROM Clientes Where Id=%s"""
-
-               
-
-                cursor.execute(query,(clientes[res-1][-1],))
-                datos=cursor.fetchall()
-                
-                print(datos,'\n')
-                mod=input('\nQuieres modificarlos? si/no: ')
-                if mod == 'si':
-                    update_cliente(cnx,datos[res-1],clientes)
-                else:
-                    break
-            else:
-                print('No se encontro')
- 
-            break
-
-            

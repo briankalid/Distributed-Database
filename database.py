@@ -75,4 +75,13 @@ def description(cnx):
 
     return tablas,columns
 
-
+def primary_kys(cnx):
+    res=(description(cnx))
+    tables=res[0]
+    pky=[]
+    for i,data in enumerate(tables):
+        for elemento in res[1][i]:
+            if 'PRI' in elemento:
+                pky.append([data,elemento])
+    return pky
+    

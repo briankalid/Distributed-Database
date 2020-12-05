@@ -90,50 +90,55 @@ if __name__=='__main__':
                 processing.registrar_cliente(cnxs[sucursal-1],NOMBRE, AP, AM, RFC, CALLE, COLONIA, ESTADO, CP)
             
         elif operacion == 2:
+            processing.buscar_clientes(sucursales,cnxs)
             #2.- Actualizar datos de los clientes y direcciones
-            opcion_busqueda = Buscar_cliente(up=True)
-            if opcion_busqueda == 1: #Por nombre
-                NOMBRE = input('\n\t Nombre: ')
-                AP = input('\n\t Apellido Paterno: ')
-                AM = input('\n\t Apellido Materno: ')
-                processing.buscar_cliente(cnxs,nombre=NOMBRE,ap=AP,am=AM)
+            #opcion_busqueda = Buscar_cliente(up=True)
+            #if opcion_busqueda == 1: #Por nombre
+             #   NOMBRE = input('\n\t Nombre: ')
+              #  AP = input('\n\t Apellido Paterno: ')
+               # AM = input('\n\t Apellido Materno: ')
+                #processing.buscar_cliente(cnxs,nombre=NOMBRE,ap=AP,am=AM)
                 
-            elif opcion_busqueda == 2: #Por RFC
-                RFC = input('\n\t RFC: ')
-                processing.buscar_cliente(cnxs,RFC)
+           # elif opcion_busqueda == 2: #Por RFC
+            #    RFC = input('\n\t RFC: ')
+             #   processing.buscar_cliente(cnxs,RFC)
                 
-            elif opcion_busqueda == 3: #Por Direccion
-                CALLE = input("\n\t Calle: ")
-                COLONIA = input("\n\t Colonia: ")
-                ESTADO=input("\n\t Estado: ")
-                CP=input("\n\t Codigo Postal: ")
-                processing.buscar_cliente(cnxs,calle=CALLE,colonia=COLONIA,estado=ESTADO,cp=CP)
+            #elif opcion_busqueda == 3: #Por Direccion
+             #   CALLE = input("\n\t Calle: ")
+              #  COLONIA = input("\n\t Colonia: ")
+               # ESTADO=input("\n\t Estado: ")
+                #CP=input("\n\t Codigo Postal: ")
+                #processing.buscar_cliente(cnxs,calle=CALLE,colonia=COLONIA,estado=ESTADO,cp=CP)
                 
              
         elif operacion == 3:
+            processing.buscar_clientes(sucursales,cnxs)
             #buscar clientes
-            opcion_busqueda = Buscar_cliente()
-            if opcion_busqueda == 1: #Por nombre
-                NOMBRE = input('\n\t Nombre: ')
-                AP = input('\n\t Apellido Paterno: ')
-                AM = input('\n\t Apellido Materno: ')
-                processing.buscar_cliente(cnxs,nombre=NOMBRE,ap=AP,am=AM)
+         #   opcion_busqueda = Buscar_cliente()
+          #  if opcion_busqueda == 1: #Por nombre
+           #     NOMBRE = input('\n\t Nombre: ')
+            #    AP = input('\n\t Apellido Paterno: ')
+             #   AM = input('\n\t Apellido Materno: ')
+              #  processing.buscar_cliente(cnxs,nombre=NOMBRE,ap=AP,am=AM)
                 
-            elif opcion_busqueda == 2: #Por RFC
-                RFC = input('\n\t RFC: ')
-                processing.buscar_cliente(cnxs,rfc=RFC)
+            #elif opcion_busqueda == 2: #Por RFC
+             #   RFC = input('\n\t RFC: ')
+              #  processing.buscar_cliente(cnxs,rfc=RFC)
                 
-            elif opcion_busqueda == 3: #Por Direccion
-                CALLE=input("\n\t Calle: ")
-                COLONIA=input("\n\t Colonia: ")
-                ESTADO=input("\n\t Estado: ")
-                CP=input("\n\t Codigo Postal: ")
-                processing.buscar_cliente(cnxs,calle=CALLE,colonia=COLONIA,estado=ESTADO,cp=CP)
-                
-            elif opcion_busqueda == 4: #Listado Completo
-                processing.all_client(sucursales,cnxs)
-                
-        elif operacion == 4: 
+            #elif opcion_busqueda == 3: #Por Direccion
+             #   CALLE=input("\n\t Calle: ")
+              #  COLONIA=input("\n\t Colonia: ")
+               # ESTADO=input("\n\t Estado: ")
+                #CP=input("\n\t Codigo Postal: ")
+                #processing.buscar_cliente(cnxs,calle=CALLE,colonia=COLONIA,estado=ESTADO,cp=CP)
+            
+            #elif opcion_busqueda == 4: #Listado Completo
+             #   processing.all_client(sucursales,cnxs)
+        
+        elif operacion == 4:
+            processing.create_tables(cnxs)
+
+        elif operacion == 5: 
             SERVICE_ON = False
             for cnx in cnxs:
                 cnx.close()

@@ -376,7 +376,7 @@ def buscar_clientes(sucursales,cnxs):
         #print(database.description(cnx))
 
 
-def create_tables(cnx):
+def create_tables(cnxs):
     name=input('Nombre de la tabla(sin espacios): ')
     n=int(input('Cuantas columnas tendra la tabla? '))
     columns=[]
@@ -445,12 +445,12 @@ def create_tables(cnx):
         cnx.commit()
 
 
-if __name__=='__main__':
-    sucursales,cnxs = database.init_databases()
-    for cnx in cnxs:
-        print(database.primary_kys(cnx)) 
+#if __name__=='__main__':
+ #   sucursales,cnxs = database.init_databases()
+  #  for cnx in cnxs:
+   #     print(database.primary_kys(cnx)) 
 
     #registrar_cliente(cnxs[0])
     #create_tables(cnxs)
-    buscar_clientes(sucursales,cnxs)
+    #buscar_clientes(sucursales,cnxs)
 

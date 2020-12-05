@@ -15,13 +15,16 @@ def generate_id(UG):
 
 
 
-def update_cliente(datos):
-    print(datos)
-    cnx=datos[0]
+def update_cliente(datosinput):
+    print(datosinput)
+    cnx=datosinput[0]
     still=True
-    datos=list(datos[1])
+    datos=list(datosinput[1])
     datos.append(datos[0])
-    datos_dom=list(datos[2][0])
+    datos_dom=list(datosinput[2][0])
+
+
+
     clt=['Nombre','Apellido_Paterno','Apellido_Materno','RFC']
     dr=['Calle','Colonia','Estado','CP']
 
@@ -303,7 +306,7 @@ def buscar_clientes(sucursales,cnxs):
 
 
         if len(datos)>0:
-            #print(datos)
+            print(datos,len(datos))
             clientes_T=[]
             clienteselct=[]
             for c,cnx in enumerate(cnxs):
@@ -317,62 +320,63 @@ def buscar_clientes(sucursales,cnxs):
                 clientes=cursor.fetchall()
                 if len(clientes)>0:
                     clientes_T.append([c,clientes])
-            if opcion_busqueda==3:
-                p=1
-                for elemento in clientes_T:
-                    for registro in elemento[1]:
-                        print(str(p)+'.',sucursales[elemento[0]],registro)
-                        nquery="SELECT * FROM Clientes WHERE Id = '%s'"%registro[-1]
-                        cursor=cnxs[elemento[0]].cursor()
-                        cursor.execute(nquery)
-                        p+=1
-                        aux=cursor.fetchall()
-                        clienteselct.append(aux)
-                        print(aux,'\n')
-                selection=int(input('Cual es? '))
+            if len(clientes_T)>0:
+                if opcion_busqueda==3:
+                    p=1
+                    for elemento in clientes_T:
+                        for registro in elemento[1]:
+                            print(str(p)+'.',sucursales[elemento[0]],registro)
+                            nquery="SELECT * FROM Clientes WHERE Id = '%s'"%registro[-1]
+                            cursor=cnxs[elemento[0]].cursor()
+                            cursor.execute(nquery)
+                            p+=1
+                            aux=cursor.fetchall()
+                            clienteselct.append(aux)
+                            print(aux,'\n')
+                    selection=int(input('Cual es? '))
 
 
-            if opcion_busqueda==2:
-                p=1
-                for elemento in clientes_T:
-                    for registro in elemento[1]:
-                        print(str(p)+'.',sucursales[elemento[0]],registro)
-                        nquery="SELECT * FROM Direcciones WHERE Id_Cliente = '%s'"%registro[0]
-                        cursor=cnxs[elemento[0]].cursor()
-                        cursor.execute(nquery)
-                        p+=1
-                        aux=cursor.fetchall()
-                        clienteselct.append([cnxs[elemento[0]],registro,aux])
-                        print(aux,'\n')
-                selection=int(input('Cua es? (numero) '))
+                if opcion_busqueda==2:
+                    p=1
+                    for elemento in clientes_T:
+                        for registro in elemento[1]:
+                            print(str(p)+'.',sucursales[elemento[0]],registro)
+                            nquery="SELECT * FROM Direcciones WHERE Id_Cliente = '%s'"%registro[0]
+                            cursor=cnxs[elemento[0]].cursor()
+                            cursor.execute(nquery)
+                            p+=1
+                            aux=cursor.fetchall()
+                            clienteselct.append([cnxs[elemento[0]],registro,aux])
+                            print(aux,'\n')
+                    selection=int(input('Cua es? (numero) '))
 
-            if opcion_busqueda==1:
-                p=1
-                for elemento in clientes_T:
-                    for registro in elemento[1]:
-                        print(str(p)+'.',sucursales[elemento[0]],registro)
-                        nquery="SELECT * FROM Direcciones WHERE Id_Cliente = '%s'"%registro[0]
-                        cursor=cnxs[elemento[0]].cursor()
-                        cursor.execute(nquery)
-                        p+=1
-                        aux=cursor.fetchall()
-                        clienteselct.append([cnxs[elemento[0]],registro,aux])
-                        print(aux,'\n')
-                selection=int(input('Cual es? (numero) '))
+                if opcion_busqueda==1:
+                    p=1
+                    for elemento in clientes_T:
+                        for registro in elemento[1]:
+                            print(str(p)+'.',sucursales[elemento[0]],registro)
+                            nquery="SELECT * FROM Direcciones WHERE Id_Cliente = '%s'"%registro[0]
+                            cursor=cnxs[elemento[0]].cursor()
+                            cursor.execute(nquery)
+                            p+=1
+                            aux=cursor.fetchall()
+                            clienteselct.append([cnxs[elemento[0]],registro,aux])
+                            print(aux,'\n')
+                    selection=int(input('Cual es? (numero) '))
 
-            
-            print(clienteselct[selection-1])
-            mod=input('Quieres modificar los datos? si/no \n')
+                
+                print(clienteselct[selection-1])
+                mod=input('Quieres modificar los datos? si/no \n')
 
-            if mod == 'si':
-                update_cliente(clienteselct[selection-1])
+                if mod == 'si':
+                    update_cliente(clienteselct[selection-1])
+
+                else:
+                    pass
+                            
 
             else:
-                pass
-                        
-
-        else:
-            print('No se encontro')
+                print('No se encontro')
 
     except: 
         #print('Hay fallon')

@@ -33,7 +33,8 @@ def Operacion():
     print('\n\t \n\t Opciones: \n\t\t 1.- Insertar nuevos clientes y direcciones \n\t\t')
     print('\n\t\t 2.- Actualizar datos de los clientes y direcciones \n\t\t')
     print('\n\t\t 3.- Buscar Clientes por nombre, RFC, o domicilio desde cualquier sucursal \n\t\t')
-    print('\n\t\t 4.- Salir \n\t\t')
+    print('\n\t\t 4.- Crear tabla \n\t\t')
+    print('\n\t\t 5.- Salir. \n\t\t')
 
     try:
         operacion = int(input())
